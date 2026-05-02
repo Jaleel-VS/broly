@@ -9,6 +9,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   && rm -rf /var/lib/apt/lists/*
 
 # Cache deps separately from source.
+# Bump CACHEBUST date to force a full rebuild when deps change.
+ARG CACHEBUST=2026-05-02
 COPY Cargo.toml Cargo.lock ./
 RUN mkdir src && echo "fn main() {}" > src/main.rs \
   && cargo build --release \
