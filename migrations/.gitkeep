@@ -1,0 +1,4 @@
+# Empty placeholder to keep the migrations/ directory tracked in git.
+# sqlx migrations land here when Broly owns its own schema. Add them with:
+#   cargo install sqlx-cli --no-default-features --features postgres
+#   sqlx migrate add -r <name>
