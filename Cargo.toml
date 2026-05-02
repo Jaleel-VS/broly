@@ -2,18 +2,20 @@
 name = "broly"
 version = "0.1.0"
 edition = "2024"
-rust-version = "1.85"
+rust-version = "1.95"
 description = "Broly — a Discord bot in Rust"
 license = "MIT"
 
 [dependencies]
-# Discord
-serenity = { version = "0.12", default-features = false, features = [
-    "client",
+# Discord — tracking the `next` branch for Components v2 and latest API
+serenity = { git = "https://github.com/serenity-rs/serenity", branch = "next", default-features = false, features = [
+    "builder",
     "gateway",
     "rustls_backend",
     "model",
     "cache",
+    "http",
+    "unstable",
 ] }
 
 # Async runtime
@@ -46,6 +48,7 @@ chrono = { version = "0.4", features = ["serde"] }
 uuid = { version = "1", features = ["v4", "serde"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
+rustls = { version = "0.23.40", default-features = false, features = ["ring"] }
 
 [profile.release]
 lto = "thin"
