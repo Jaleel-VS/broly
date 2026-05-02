@@ -1,0 +1,53 @@
+[package]
+name = "broly"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+description = "Broly — a Discord bot in Rust"
+license = "MIT"
+
+[dependencies]
+# Discord
+serenity = { version = "0.12", default-features = false, features = [
+    "client",
+    "gateway",
+    "rustls_backend",
+    "model",
+    "cache",
+] }
+
+# Async runtime
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "signal"] }
+
+# Database
+sqlx = { version = "0.8", default-features = false, features = [
+    "runtime-tokio",
+    "tls-rustls-ring-native-roots",
+    "postgres",
+    "macros",
+    "migrate",
+    "chrono",
+    "uuid",
+] }
+
+# Observability
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt", "json"] }
+
+# Config
+dotenvy = "0.15"
+
+# Errors
+anyhow = "1"
+thiserror = "2"
+
+# Utilities
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1", features = ["v4", "serde"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+strip = "symbols"
