@@ -1,3 +1,6 @@
+use poise::serenity_prelude as serenity;
+use serenity::builder::{CreateAttachment, CreateMessage};
+
 use crate::{Context, Error};
 
 /// Show a 7-day weather forecast for a location.
@@ -28,20 +31,15 @@ pub async fn forecast(
 
     let days = crate::weather::forecast(&http_client, loc.latitude, loc.longitude).await?;
 
-    // Text-only for now. Image rendering comes in Layer 2.
-    let mut lines = vec![format!("**📍 {}**\n", loc.display_name())];
-    for day in &days {
-        let (desc, emoji) = crate::weather::weather_description(day.weather_code);
-        lines.push(format!(
-            "{} {} {:.0}°/{:.0}° — {}",
-            &day.date[5..],
-            emoji,
-            day.temp_max,
-            day.temp_min,
-            desc
-        ));
-    }
+    // Render the forecast card image.
+    let png_bytes = crate::forecast_render::render(&loc.display_name(), &days)?;
 
-    ctx.say(lines.join("\n")).await?;
+    let attachment = CreateAttachment::bytes(png_bytes, "forecast.png");
+    let message = CreateMessage::new().add_file(attachment);
+
+    ctx.channel_id()
+        .send_message(&ctx.http(), message)
+        .await?;
+
     Ok(())
 }

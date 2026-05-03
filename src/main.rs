@@ -1,6 +1,7 @@
 mod commands;
 mod config;
 mod db;
+mod forecast_render;
 mod ping;
 mod weather;
 
