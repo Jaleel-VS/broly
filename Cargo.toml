@@ -7,14 +7,13 @@ description = "Broly — a Discord bot in Rust"
 license = "MIT"
 
 [dependencies]
-# Discord — tracking the `next` branch for Components v2 and latest API
-serenity = { git = "https://github.com/serenity-rs/serenity", branch = "next", default-features = false, features = [
-    "builder",
-    "gateway",
-    "rustls_backend",
-    "model",
+# Discord — poise framework on top of serenity (serenity-next branch)
+poise = { git = "https://github.com/serenity-rs/poise", branch = "serenity-next", features = [
     "cache",
-    "http",
+    "handle_panics",
+] }
+# Direct serenity dep for the `unstable` feature (sync_id for Spotify track links)
+serenity = { git = "https://github.com/serenity-rs/serenity", branch = "next", default-features = false, features = [
     "unstable",
 ] }
 
@@ -32,6 +31,12 @@ sqlx = { version = "0.8", default-features = false, features = [
     "uuid",
 ] }
 
+# HTTP client (for weather API etc.)
+reqwest = { version = "0.13", default-features = false, features = ["json", "query", "rustls"] }
+
+# TLS — explicit provider install needed for serenity next
+rustls = { version = "0.23", default-features = false, features = ["ring"] }
+
 # Observability
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt", "json"] }
@@ -41,14 +46,11 @@ dotenvy = "0.15"
 
 # Errors
 anyhow = "1"
-thiserror = "2"
 
 # Utilities
 chrono = { version = "0.4", features = ["serde"] }
-uuid = { version = "1", features = ["v4", "serde"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-rustls = { version = "0.23.40", default-features = false, features = ["ring"] }
 
 [profile.release]
 lto = "thin"

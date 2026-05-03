@@ -1,10 +1,8 @@
-//! Shared latency-measurement logic used by both text-command `ping`
-//! and slash-command `/ping`. Measures gateway WebSocket latency, API
-//! round-trip latency, and database latency.
+//! Shared latency-measurement logic.
 
 use std::time::{Duration, Instant};
 
-use serenity::prelude::Context;
+use poise::serenity_prelude::prelude::Context;
 use sqlx::PgPool;
 
 /// Read the current shard's WebSocket latency from the runner info.
